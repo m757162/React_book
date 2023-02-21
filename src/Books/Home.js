@@ -1,13 +1,17 @@
 import { Navbar,Container,NavDropdown,Nav,Form,Row,Col,InputGroup,FormControl,Alert,Button,Accordion,Badge,Card, Carousel,Modal, Offcanvas, ProgressBar, Tabs, Tab, OverlayTrigger, Popover, Tooltip,Spinner} from "react-bootstrap";
 import TopNav from './Navbar';
 import { useNavigate,Navigate  } from "react-router-dom";
-import axios from '../Base_config/Root_axios';
+// import axios from '../Base_config/Root_axios';
+import instance from '../Base_config/Root_axios';
+
 import {useState,useEffect} from 'react'
 import '../App.css'
 import SearchBox from '../SearchBox/SearchBox'
 import Cards from '../Cards/Card'
 
 export default function Home(){
+    const {http} = instance();
+
     const navigate=useNavigate();
     const [bookInfo,setBookInfo]=useState([])
     const [searchKey,setSearchKey]=useState(null)
@@ -27,10 +31,7 @@ export default function Home(){
             navigate('/login');
         }else{
             setLoading(true)
-            axios.get(`/dashboard?page=${page}&per_page=2`,{
-                         headers: {
-                            "Authorization": "Bearer "+sessionStorage.getItem("token") ?? ''                                      
-                       }}).then((res)=>{
+            http.get(`/dashboard?page=${page}&per_page=2`).then((res)=>{
                            if(res.data.total >0){
                 console.log(res.data)
                 setTotal_Page(res.data.total)

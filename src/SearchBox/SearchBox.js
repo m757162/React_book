@@ -1,11 +1,13 @@
 import { Navbar,Container,NavDropdown,Nav,Form,Row,Col,InputGroup,FormControl,Alert,Button,Accordion,Badge,Card, Carousel,Modal, Offcanvas, ProgressBar, Tabs, Tab, OverlayTrigger, Popover, Tooltip,Spinner} from "react-bootstrap";
 import { useNavigate,Navigate  } from "react-router-dom";
-import axios from '../Base_config/Root_axios';
+import instance from '../Base_config/Root_axios';
 import {useState,useEffect} from 'react'
 import '../App.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
  export default function Home({reload}){
+    const {http} = instance();
+     
     const navigate=useNavigate()
    
     const [searchKey,setSearchKey]=useState(null)
@@ -31,10 +33,7 @@ import 'react-toastify/dist/ReactToastify.css';
         event.target.value == '' && setSearchData(null)
         if(event.target.value !== ''){
             setSpinner(true)
-            axios.get('/searchName?search='+event.target.value,{
-                headers: {
-                   "Authorization": "Bearer "+sessionStorage.getItem("token") ?? ''                                      
-            }}).then((res)=>{
+            http.get('/searchName?search='+event.target.value).then((res)=>{
                           
                 setSearchData(res.data)               
                 res.statusText &&  setSpinner(false)
