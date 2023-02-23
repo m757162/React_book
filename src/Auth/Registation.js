@@ -84,7 +84,7 @@ export default function Registation(){
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                               <Form.Label className="text-white">Email</Form.Label>
-                              <Form.Control  onChange={user_email} ref={ref2} type="text" placeholder="Enter Your Email" />
+                              <Form.Control  onChange={user_email} ref={ref2} type="email" placeholder="Enter Your Email" />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                               <Form.Label className="text-white">Password</Form.Label>

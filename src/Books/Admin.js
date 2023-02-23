@@ -16,9 +16,9 @@ export default function Admin(){
     const navigate=useNavigate();
     const [spinner,setSpinner]=useState(false)
     
-    const [book_name,setBook_name]= useState(null)
-    const [selectImage,setimage]= useState(null)
-    const [details,setdetails]= useState(null)
+    const [book_name,setBook_name]= useState('')
+    const [selectImage,setimage]= useState('')
+    const [details,setdetails]= useState('')
     const formimg = (event) => {
         setimage(event.target.files[0])
     }
@@ -38,10 +38,10 @@ export default function Admin(){
     formData.append("book_name", book_name);
     formData.append("selectImage", selectImage);
     formData.append("details", details);
-    if(  book_name == null || selectImage == null || details == null ){
-        alert("please fillup all field")
-    }
-    else{
+    // if(  book_name == null || selectImage == null || details == null ){
+    //     alert("please fillup all field")
+    // }
+    // else{
         try{
                 setSpinner(true)
                 http.post('get_data',formData,{
@@ -49,14 +49,24 @@ export default function Admin(){
                         "Content-Type": "multipart/form-data",
                     }
                 }).then((res)=>{
+
                     setSpinner(false)
-                    toast(res.data)
-                    ref1.current.value = "";
-                    ref2.current.value = "";
-                    ref.current.value = "";
+                        ref1.current.value = "";
+                        ref2.current.value = "";
+                        ref.current.value = "";
+                    if(res.data == 1){
+                        toast.success("data uploaded successfully")
+                        
+                    }else{
+                        toast.error(res.data.toString())
+                    }
+                    
+                    
 
                 }).catch((error)=>{
                     setSpinner(false)
+                    console.log(error)
+                    console.log("eeg")
                     toast.error("Data Not add.somthing wrong")
                 })
 
@@ -64,7 +74,7 @@ export default function Admin(){
             catch(error) {
                 toast.error("somthing wrong.please try again")
             }
-        }
+        // }
     }
 
     const ref1 = useRef();
@@ -90,7 +100,7 @@ export default function Admin(){
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                               <Form.Label className="text-white">Book Image</Form.Label>
-                              <Form.Control  onChange={formimg} ref={ref}  type="file" />
+                              <Form.Control  onChange={formimg} ref={ref}  type="file" accept="image/*" />
                             </Form.Group>
                            
                             <Button variant="primary" disabled={spinner ? true:false}  type="submit">
