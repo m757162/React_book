@@ -88,7 +88,7 @@ export default function Registation(){
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                               <Form.Label className="text-white">Password</Form.Label>
-                              <Form.Control  onChange={password} type="text" ref={ref} placeholder="Enter Your Password" />
+                              <Form.Control  onChange={password} type="password" ref={ref} placeholder="Enter Your Password" />
                             </Form.Group>
                             <Link to="/login">I have an account</Link><br />
                             <Button variant="primary" disabled={spinner ? true:false} type="submit">

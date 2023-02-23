@@ -78,7 +78,7 @@ export default function Login(){
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                               <Form.Label className="text-white">Password</Form.Label>
-                              <Form.Control  onChange={password} ref={ref1} type="text" placeholder="Enter Your Password" />
+                              <Form.Control  onChange={password} ref={ref1} type="password" placeholder="Enter Your Password" />
                             </Form.Group>
                             <Link to="/Registation">Create a new account</Link><br />
                            
