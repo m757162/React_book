@@ -7,8 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Login(){
     const {http}=instance()
-    const [psw,setpsw]= useState(null)
-    const [email,setemail]= useState(null)
+    const [psw,setpsw]= useState('')
+    const [email,setemail]= useState('')
     const [spinner,setSpinner]=useState(false)
     const [login,setLogin]=useState(false)
 
@@ -27,7 +27,7 @@ export default function Login(){
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", psw);
-        if(  email == null || psw == null  ){
+        if(  email == '' || psw == ''  ){
             alert("please fillup all field")
             setSpinner(false)
         }else{

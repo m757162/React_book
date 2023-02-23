@@ -7,9 +7,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Registation(){
   const {http}=instance()
-  const [name,setname]= useState(null)
-  const [psw,setpsw]= useState(null)
-  const [email,setemail]= useState(null)
+  const [name,setname]= useState('')
+  const [psw,setpsw]= useState('')
+  const [email,setemail]= useState('')
   const [spinner,setSpinner]=useState(false)
   const [reg,setReg]=useState(false)
   const navigate = useNavigate();
@@ -32,14 +32,14 @@ export default function Registation(){
         formData.append("password", psw);
         formData.append("email", email);
 
-        if(name == null || psw == null || email == null ){
+        if(name == '' || psw == '' || email == '' ){
             alert("please fillup all field")
             setSpinner(false)
         }else{
             try {
               http.post('registation',formData).then((res)=>{                       
                     setSpinner(false)
-                    toast.success(res.data.toString())                 
+                                   
                     if(res.data.msg == "success"){                     
                       toast.success("Registation success!")                      
                       sessionStorage.setItem('token',res.data.token)
@@ -47,7 +47,9 @@ export default function Registation(){
                       ref1.current.value = "";
                       ref2.current.value = "";
                       ref.current.value = "";
-                    }               
+                    } else{
+                      toast.error(res.data.toString()) 
+                    }             
                 }).catch((error)=>{
                   setSpinner(false)
                   toast.error("Registation failed")
