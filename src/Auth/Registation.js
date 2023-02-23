@@ -37,11 +37,9 @@ export default function Registation(){
             setSpinner(false)
         }else{
             try {
-              http.post('registation',formData).then((res)=>{   
-                console.log('reg action call ok')               
+              http.post('registation',formData).then((res)=>{                       
                     setSpinner(false)
-                    toast.success(res.data.toString())   
-                    console.log(res.data)                 
+                    toast.success(res.data.toString())                 
                     if(res.data.msg == "success"){                     
                       toast.success("Registation success!")                      
                       sessionStorage.setItem('token',res.data.token)
