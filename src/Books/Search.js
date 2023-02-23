@@ -1,7 +1,7 @@
 import { Navbar,Container,NavDropdown,Nav,Form,Row,Col,InputGroup,FormControl,Alert,Button,Accordion,Badge,Card, Carousel,Modal, Offcanvas, ProgressBar, Tabs, Tab, OverlayTrigger, Popover, Tooltip,Spinner} from "react-bootstrap";
 
 import {useParams} from 'react-router-dom';
-import axios from '../Base_config/Root_axios';
+import instance from '../Base_config/Root_axios';
 import {useState,useEffect} from 'react';
 import TopNav from './Navbar'
 import  Cards  from '../Cards/Card';
@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Search(){
+    const {http}=instance()
     const {searchData} =useParams()
     const [bookdata,setBookData]=useState(false);
     const [empty,setEmpty]=useState(false);
@@ -18,11 +19,7 @@ export default function Search(){
    
     useEffect(()=>{
         setSpinner(true)
-        axios.get('/searchName?search='+searchData,{
-            headers: { 
-                "Authorization": "Bearer "+sessionStorage.getItem("token") ?? '' 
-             }
-        }).then((res)=>{
+        http.get('/searchName?search='+searchData).then((res)=>{
          
             if(res.data.length >= 1){
                 setBookData(res.data)

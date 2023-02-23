@@ -2,7 +2,7 @@ import { Navbar,Container,Nav,Form,Row,Col,Button,Spinner} from "react-bootstrap
 import {useState,useEffect,useRef} from 'react'
 import TopNav from './Navbar';
 import { useNavigate,Navigate  } from "react-router-dom";
-import axios from '../Base_config/Root_axios';
+import instance from '../Base_config/Root_axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Admin(){
@@ -11,6 +11,8 @@ export default function Admin(){
             navigate('/login');
         }
     })
+
+    const {http}=instance()
     const navigate=useNavigate();
     const [spinner,setSpinner]=useState(false)
     
@@ -42,11 +44,10 @@ export default function Admin(){
     else{
         try{
                 setSpinner(true)
-                axios.post('get_data',formData,{
+                http.post('get_data',formData,{
                     headers: { 
                         "Content-Type": "multipart/form-data",
-                        "Authorization": "Bearer "+sessionStorage.getItem("token") ?? '' 
-                     }
+                    }
                 }).then((res)=>{
                     setSpinner(false)
                     toast(res.data)

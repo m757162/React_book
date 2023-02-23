@@ -1,13 +1,14 @@
 import { Navbar,Container,NavDropdown,Nav,Form,Row,Col,InputGroup,FormControl,Alert,Button,Accordion,Badge,Card, Carousel,Modal, Offcanvas, ProgressBar, Tabs, Tab, OverlayTrigger, Popover, Tooltip,Spinner} from "react-bootstrap";
 import TopNav from './Navbar';
 import { useNavigate,Navigate  } from "react-router-dom";
-import axios from '../Base_config/Root_axios';
+import instance from '../Base_config/Root_axios';
 import {useState,useEffect} from 'react'
 import '../App.css'
 import SearchBox from '../SearchBox/SearchBox'
 import Cards from '../Cards/Card'
 
 export default function Home(){
+    const{http}=instance();
     const navigate=useNavigate();
     const [bookInfo,setBookInfo]=useState([])
     const [searchKey,setSearchKey]=useState(null)
@@ -16,10 +17,11 @@ export default function Home(){
     
     const [error,setError]=useState('')
     const [page,setPage]=useState(1)
-    const [total_page,setTotal_Page]=useState(1)
+    const [total_page,setTotal_Page]=useState()
     const [loading,setLoading]=useState(false)
     const [btn,setBtn]=useState(true)
     const [tolastId,setTo_lastId]=useState(0)
+    const [dataProcess,setDataProcess]= useState(true)
 
     // get all book info   
     useEffect(()=>{
@@ -27,17 +29,14 @@ export default function Home(){
             navigate('/login');
         }else{
             setLoading(true)
-            axios.get(`/dashboard?page=${page}&per_page=2`,{
-                         headers: {
-                            "Authorization": "Bearer "+sessionStorage.getItem("token") ?? ''                                      
-                       }}).then((res)=>{
-                           if(res.data.total >0){
-                console.log(res.data)
-                setTotal_Page(res.data.total)
-                setTo_lastId(res.data.to)
-                setBookInfo((pre)=>[...pre,res.data])
-                setLoading(false)
-                           }
+            http.get(`/dashboard?page=${page}&per_page=2`).then((res)=>{
+                setDataProcess(false)
+                if(res.data.total >0){
+                    setTotal_Page(res.data.total)
+                    setTo_lastId(res.data.to)
+                    setBookInfo((pre)=>[...pre,res.data])
+                    setLoading(false)
+                }
             }).catch((err)=>{            
                 alert("please login again");
                 sessionStorage.clear("token")
@@ -76,7 +75,9 @@ export default function Home(){
                 </Row>
                 <center>
                     {
+                        dataProcess ? <h2 className="text-white">Loading...</h2>:(
                         tolastId < total_page ?   <Button className="mt-3" onClick={increase}>{loading ? "Loading...":"Load more"}</Button>:<h2 className="text-white">No more</h2>
+                        )
                     }
                 </center>               
             </Container>

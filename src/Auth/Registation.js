@@ -2,11 +2,11 @@ import { Navbar,Container,NavDropdown,Nav,Form,Row,Col,InputGroup,FormControl,Al
 import {useState,useRef} from 'react'
 import '../App.css'
 import { useNavigate,Link } from "react-router-dom";
-import axios from '../Base_config/Root_axios';
+import instance from '../Base_config/Root_axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Registation(){
-
+  const {http}=instance()
   const [name,setname]= useState(null)
   const [psw,setpsw]= useState(null)
   const [email,setemail]= useState(null)
@@ -37,9 +37,11 @@ export default function Registation(){
             setSpinner(false)
         }else{
             try {
-                axios.post('registation',formData).then((res)=>{                  
+              http.post('registation',formData).then((res)=>{   
+                console.log('reg action call ok')               
                     setSpinner(false)
-                    toast.error(res.data.toString())                    
+                    toast.success(res.data.toString())   
+                    console.log(res.data)                 
                     if(res.data.msg == "success"){                     
                       toast.success("Registation success!")                      
                       sessionStorage.setItem('token',res.data.token)

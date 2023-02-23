@@ -2,12 +2,11 @@ import { Navbar,Container,NavDropdown,Nav,Form,Row,Col,InputGroup,FormControl,Al
 import {useState,useRef} from 'react'
 import  '../App.css'
 import { useNavigate,Link  } from "react-router-dom";
-import axios from '../Base_config/Root_axios';
-
+import instance from '../Base_config/Root_axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Login(){
-    console.log(sessionStorage.getItem("token"))
+    const {http}=instance()
     const [psw,setpsw]= useState(null)
     const [email,setemail]= useState(null)
     const [spinner,setSpinner]=useState(false)
@@ -33,7 +32,7 @@ export default function Login(){
             setSpinner(false)
         }else{
             try {
-                axios.post('login',formData).then((res)=>{                  
+                http.post('login',formData).then((res)=>{                  
                     setSpinner(false)
                     toast.error(res.data.toString())
                     if(res.data.msg){

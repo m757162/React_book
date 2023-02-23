@@ -4,14 +4,18 @@ import { Navbar,Container,NavDropdown,Nav,Form,Row,Col,InputGroup,FormControl,Al
 import { Link} from 'react-router-dom';
 import { useNavigate,Navigate  } from "react-router-dom";
 import {useState,useEffect} from 'react'
-import axios from '../Base_config/Root_axios';
+import instance from '../Base_config/Root_axios';
 import { FaBook } from "react-icons/fa";
 
 export default function NavTop()  {
+    const {http}=instance()
     const [spinner,setSpinner]=useState(false)
     const [logoutbool,setlogoutbool]= useState(false)
     const navigate=useNavigate();
     useEffect(()=>{
+        if(sessionStorage.getItem("token") == null){
+            navigate('/login');
+        }
         if(logoutbool == true){
             if(sessionStorage.getItem("token") == null){
                 navigate('/login');
@@ -22,10 +26,7 @@ export default function NavTop()  {
 
     const logout = () =>{
         setSpinner(true)
-        axios.get('/logout',{
-            headers: {
-               "Authorization": "Bearer "+sessionStorage.getItem("token") ?? ''                                      
-          }}).then((res)=>{            
+        http.get('/logout').then((res)=>{            
             setlogoutbool(true)
             setSpinner(false)
             navigate('/login');
